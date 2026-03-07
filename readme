@@ -1,0 +1,5 @@
+Chạy lần lượt từ eureka server --> user --> product --> order --> api gateway
+
+Trước khi chạy api gateway cần đợi tất cả các file kia đăng kí xong mới run api gateway
+
+Sau đó truy cập localhost:8083 để test
