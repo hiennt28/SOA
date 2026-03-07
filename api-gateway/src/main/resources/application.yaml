@@ -1,0 +1,38 @@
+server:
+  port: 8080                           # Cổng của Gateway giao tiếp với Frontend
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        # Cấu hình route cho UserService
+        - id: user-service
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/api/users/**
+
+        # Cấu hình route cho ProductService
+        - id: product-service
+          uri: lb://PRODUCTSERVICE
+          predicates:
+            - Path=/api/products/**
+
+        # Cấu hình route cho OrderService
+        - id: order-service
+          uri: lb://ORDERSERVICE
+          predicates:
+            - Path=/api/orders/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+    
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
