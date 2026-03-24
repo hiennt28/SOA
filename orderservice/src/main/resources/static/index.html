@@ -177,6 +177,7 @@
                 document.getElementById("userForm").classList.add("hidden")
                 document.getElementById("productForm").classList.add("hidden")
                 document.getElementById("orderForm").classList.add("hidden")
+                document.getElementById("result").classList.add("hidden")
             }
 
             function showForm(type) {
@@ -194,6 +195,8 @@
                     loadUsersForOrder()
                     loadProductsForOrder()
                 }
+                if (type === "result")
+                    document.getElementById("result").classList.remove("hidden")
 
             }
 
@@ -211,6 +214,13 @@
             /* ================= USER ================= */
 
             function addUser() {
+                const name = document.getElementById("userName").value.trim();
+                const email = document.getElementById("userEmail").value.trim();
+
+                if (!name || !email) {
+                    alert("Name and Email cannot be empty");
+                    return;
+                }
 
                 fetch(base + "/api/users/createUser", {
 
@@ -219,14 +229,21 @@
 
                     body: JSON.stringify({
 
-                        name: document.getElementById("userName").value,
-                        email: document.getElementById("userEmail").value
+                        name: document.getElementById("userName").value.trim(),
+                        email: document.getElementById("userEmail").value.trim()
 
                     })
 
                 })
 
-                        .then(r => r.json())
+                        .then(r => {
+
+                            if (!r.ok) {
+                                throw new Error("HTTP: " + r.status);
+                            }
+
+                            return r.json();
+                        })
                         .then(data => {
 
                             alert("User added")
@@ -248,13 +265,16 @@
                 fetch(base + "/api/users/getAllUser")
                         .then(r => r.json())
                         .then(data => {
+                            alert("Data served by UserService port: " + data.port)
+
+                            let users = data.user
 
                             let html = "<h3>User List</h3>"
 
                             html += "<table>"
                             html += "<tr><th>ID</th><th>Name</th><th>Email</th></tr>"
 
-                            data.forEach(u => {
+                            users.forEach(u => {
 
                                 html += `
         <tr>
@@ -267,7 +287,7 @@
                             })
 
                             html += "</table>"
-
+                            showForm("result")
                             document.getElementById("result").innerHTML = html
 
                         })
@@ -282,6 +302,14 @@
             /* ================= PRODUCT ================= */
 
             function addProduct() {
+                const name = document.getElementById("productName").value.trim();
+                const price = document.getElementById("productPrice").value.trim();
+
+                if (!name || !price || price<=0) {
+                    alert("Name and Price cannot be empty. Price >=0");
+                    return;
+                }
+                
 
                 fetch(base + "/api/products/createProduct", {
 
@@ -297,7 +325,12 @@
 
                 })
 
-                        .then(r => r.json())
+                        .then(r => {
+                            if(!r.ok){
+                                throw new Error("HTTP: "+r.status);
+                            }
+                            return r.json();
+                        })
                         .then(data => {
 
                             alert("Product added")
@@ -338,7 +371,7 @@
                             })
 
                             html += "</table>"
-
+                            showForm("result")
                             document.getElementById("result").innerHTML = html
 
                         })
@@ -357,11 +390,13 @@
                 fetch(base + "/api/users/getAllUser")
                         .then(r => r.json())
                         .then(data => {
+                            alert("Data served by UserService port: " + data.port)
+                            let users=data.user
 
                             let select = document.getElementById("orderUserId")
                             select.innerHTML = ""
 
-                            data.forEach(u => {
+                            users.forEach(u => {
 
                                 select.innerHTML += `
         <option value="${u.id}">
@@ -403,6 +438,15 @@
 
 
             function createOrder() {
+                
+                const userId = document.getElementById("orderUserId").value.trim();
+                const productId = document.getElementById("orderProductId").value.trim();
+                const quantity=document.getElementById("orderQuantity").value.trim();
+                
+                if (!userId || !productId || !quantity || quantity<=0) {
+                    alert("User and Product cannot be empty. Quantity>=0");
+                    return;
+                }
 
                 fetch(base + "/api/orders/createOrder", {
 
@@ -419,7 +463,12 @@
 
                 })
 
-                        .then(r => r.json())
+                        .then(r => {
+                            if(!r.ok){
+                                throw new Error("HTTP: "+r.status);
+                            }
+                            return r.json();
+                        })
                         .then(data => {
 
                             alert("Order created")
@@ -468,7 +517,7 @@
                             })
 
                             html += "</table>"
-
+                            showForm("result")
                             document.getElementById("result").innerHTML = html
 
                         })

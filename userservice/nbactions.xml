@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-instance1</actionName>
+            <displayName>instance1</displayName>
+            <goals>
+                <goal>spring-boot:run</goal>
+            </goals>
+            <properties>
+                <spring-boot.run.arguments>--server.port=9091</spring-boot.run.arguments>
+                
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-instance2</actionName>
+            <displayName>instance2</displayName>
+            <goals>
+                <goal>spring-boot:run</goal>
+            </goals>
+            <properties>
+                <spring-boot.run.arguments>--server.port=9092</spring-boot.run.arguments>
+                
+            </properties>
+        </action>
+    </actions>

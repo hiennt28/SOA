@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-@EnableDiscoveryClient // <--- Giúp Gateway kết nối và lấy thông tin routing từ Eureka
+@EnableDiscoveryClient
 public class GatewayApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GatewayApiApplication.class, args);
